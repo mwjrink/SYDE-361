@@ -1,0 +1,87 @@
+.App {
+  text-align: center;
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+}
+
+label {
+  font-size: medium;
+  margin-left: 5px;
+  text-align: left;
+}
+
+.popup {
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+}
+
+button {
+  height: 60px;
+  width: 125px;
+  border-radius: 10px;
+}
+
+.group-div {
+  padding: 15px;
+  border: solid 2px;
+  border-radius: 5px;
+  margin: 0px 5px;
+  text-align: center;
+}
+
+.group-div-optional {
+  padding: 15px;
+  border: dotted 2px;
+  border-radius: 5px;
+  margin: 0px 5px;
+  min-width: 125px;
+  min-height: 114px;
+  text-align: center;
+}
+
+.select-button {
+  border: black solid;
+  border-radius: 10px;
+  padding: 10px; 
+  margin: 0px 5px;
+}
+
+.select-button-pitch {
+  border: black solid;
+  border-radius: 10px;
+  padding: 2.5px; 
+  margin: 0px 5px;
+}
+
+/* The popup form - hidden by default */
+.form-popup {
+position: fixed;
+top: 50%; 
+left: 50%; 
+transform: translate(-50%, -50%);
+border: black solid;
+}
+
+/* Add styles to the form container */
+.form-container {
+  height: 500px;
+  width: 500px;
+  padding: 10px;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+}
+
+.hidden { 
+  display: none; 
+}
+

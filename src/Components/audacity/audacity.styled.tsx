@@ -113,8 +113,8 @@ export const ButtonsContainer = styled.div`
 `;
 
 export const BranchContainer = styled.div`
-  width: 70%;
-  height: 100%;
+  width: 100%;
+  height: 95%;
 
   font-size: 2rem;
 
@@ -124,8 +124,8 @@ export const BranchContainer = styled.div`
   border-radius: 4px;
   border: none;
   box-shadow: ${BoxShadow(4)};
-  margin: 4px;
-  padding: 8px;
+  margin: 8px;
+  padding: 16px;
 `;
 
 export const ChatContainer = styled.div`

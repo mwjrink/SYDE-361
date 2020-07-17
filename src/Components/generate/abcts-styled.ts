@@ -18,11 +18,11 @@ export const Container = styled.div`
   margin: 20px;
   border-radius: 2px;
   border: none;
-  box-shadow: ${BoxShadow(4)};
+  /* box-shadow: ${BoxShadow(4)};
   padding: 16px;
 
   width: 1000px;
-  height: 400px;
+  height: 400px; */
 `;
 
 export const ParameterContainer = styled.div`

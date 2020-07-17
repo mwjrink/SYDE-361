@@ -1,0 +1,52 @@
+.App {
+  text-align: center;
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+}
+
+label {
+  font-size: medium;
+  margin-left: 30px;
+  text-align: left;
+}
+
+.popup {
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+}
+
+.drop {
+  background-color: white;
+  height: 300px;
+  width: auto;
+  margin: 20px;
+}
+
+.drop-inner { 
+  height: 300px;
+  width: auto;
+  margin: 15px; 
+  border: grey dashed 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+button {
+  height: 60px;
+  width: 125px;
+  border-radius: 10px;
+} 
+
+.hidden { 
+  display: none; 
+}
