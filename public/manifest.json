@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "SYDE 361 Project",
+  "name": "A music collaboration and GA generator",
   "icons": [
     {
       "src": "favicon.ico",
