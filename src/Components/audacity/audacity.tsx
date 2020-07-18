@@ -59,7 +59,7 @@ export function Audacity({ importTrack, generateTrack, manualTrack, tracks, remo
                         {tracks.map((track, index) => (
                             <Track key={index}>
                                 {track}
-                                <button onClick={() => removeTrack(index)}>X</button>
+                                <button style={{backgroundColor: "rgb(239, 239, 239)"}} onClick={() => removeTrack(index)}>X</button>
                             </Track>
                         ))}
                     </InnerBranchesContainer>

@@ -22,7 +22,7 @@ export class Abcts extends Component<
         setMusic: (music: any) => void
     },
     abcState
-> {
+    > {
     uniqueNumber = Date.now() + Math.random()
     staff = undefined
     midi = new abcjs.synth.CreateSynth()
@@ -135,7 +135,7 @@ export class Abcts extends Component<
                     <ParameterContainer>
                         <Parameter>
                             {`Tempo:`}
-                            <Input />
+                            <Input placeholder="150" />
                         </Parameter>
                         <Parameter>
                             {`Key:`}
@@ -143,7 +143,7 @@ export class Abcts extends Component<
                         </Parameter>
                         <Parameter>
                             {`Instrument:`}
-                            <Input />
+                            <Input placeholder="Piano" />
                         </Parameter>
                         <Parameter>
                             {`Reverb:`}
@@ -152,12 +152,16 @@ export class Abcts extends Component<
                     </ParameterContainer>
                     <div id={'abcjs-result-' + this.uniqueNumber} style={{ width: '100%' }} />
                 </MainContainer>
-                <ButtonContainer>
-                    <Button onClick={() => this.play()}>Play</Button>
-                    <Button onClick={() => this.stop()}>Stop</Button>
+                <ButtonContainer style={{justifyContent: 'space-between', width: '100%' }}>
+                    <div>
+                        <Button onClick={() => this.play()}>Play</Button>
+                        <Button onClick={() => this.stop()}>Stop</Button>
+                    </div>
                     <Button onClick={() => this.regenerate()}>Generate</Button>
-                    <Button onClick={() => this.props.close()}>Cancel</Button>
-                    <Button onClick={() => this.props.setMusic('Generated')}>Save</Button>
+                    <div>
+                        <Button style={{ backgroundColor: '#f76874' }} onClick={() => this.props.close()}>Cancel</Button>
+                        <Button style={{ backgroundColor: '#6afc8a' }} onClick={() => this.props.setMusic('Generated')}>Save</Button>
+                    </div>
                 </ButtonContainer>
             </Container>
         )

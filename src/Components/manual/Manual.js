@@ -56,6 +56,7 @@ class Manual extends Component {
             selectedPitch: null,
         }
         this.registerPitch = this.registerPitch.bind(this)
+        this.clearPitch = this.clearPitch.bind(this)
         this.registerAccidental = this.registerAccidental.bind(this)
         this.registerLength = this.registerLength.bind(this)
         this.registerOther = this.registerOther.bind(this)
@@ -74,8 +75,11 @@ class Manual extends Component {
     }
 
     registerPitch(event) {
-        console.log(event.target.id)
         this.setState({ selectedPitch: event.target.id })
+    }
+
+    clearPitch(event) {
+        this.setState({ selectedPitch: null});
     }
 
     registerAccidental(event) {
@@ -98,7 +102,6 @@ class Manual extends Component {
     }
 
     registerOther(event) {
-        console.log(event.target.id)
         this.addABCVal(event.target.id)
     }
 
@@ -186,8 +189,13 @@ class Manual extends Component {
         return (
             <div className="popup">
                 <h2 style={{ color: 'black', textAlign: 'left', marginLeft: '1em', marginBottom: '0' }}>Manual:</h2>
-                <div style={{ flex: '1', overflowY: 'auto', width: 'inherit', alignSelf: 'center' }}>
+                <div style={{ flex: '1', display: "flex", overflowY: 'auto', width: '100%', alignSelf: 'center', justifyContent: 'space-between' }}>
+                    <div style={{minWidth: "200px"}}></div>
                     <div id="staff"></div>
+
+                    <div style={{minWidth: "200px", textAlign: 'left'}}><u>Currently Selected</u><br></br>Pitch: {this.state.selectedPitch} 
+                    {this.state.selectedPitch != null ? <button className="small-button" onClick={this.clearPitch}>Clear</button>: ''}
+                    </div>
                 </div>
                 <div
                     style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', maxHeight: '225px', overflow: 'auto', margin: '0px 5px' }}
@@ -220,7 +228,7 @@ class Manual extends Component {
                   <img id="z1/4" className="select-button" onClick={this.registerOther} src={SixteenthRest} height={'25px'} width={'25px'} alt="SixteenthRest" />
                 </div> */}
                     </div>
-                    <div style={{ textAlign: 'left' }}>
+                    <div style={{ textAlign: 'left' }} className={!this.state.selectedPitch ? 'invisible' : ''}>
                         <label>2. Accidentals</label>
                         <div className="group-div-optional">
                             <img id="^" className="select-button" onClick={this.registerAccidental} src={Sharp} height={'25px'} width={'25px'} alt="Sharp" />
@@ -236,7 +244,7 @@ class Manual extends Component {
                             <img id="_" className="select-button" onClick={this.registerAccidental} src={Flat} height={'25px'} width={'25px'} alt="Flat" />
                         </div>
                     </div>
-                    <div style={{ textAlign: 'left' }}>
+                    <div style={{ textAlign: 'left' }}  className={!this.state.selectedPitch ? 'invisible' : ''}>
                         <label>3. Note Length</label>
                         <div className="group-div">
                             <img
@@ -327,7 +335,7 @@ class Manual extends Component {
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'space-between', margin: '10px' }}>
                     <div>
-                        <button onClick={this.startAudio} style={{ marginRight: '10px' }}>
+                        <button onClick={this.startAudio}>
                             Play
                         </button>
                         <button onClick={this.stopAudio}>Stop</button>
@@ -445,11 +453,11 @@ class Manual extends Component {
                                 </div>
                             </form>
                         </div>
-                        <button style={{ backgroundColor: 'green', marginRight: '10px', marginLeft: '10px' }} onClick={() => this.props.save(this.createABCString())}>
-                            Save
-                        </button>
-                        <button style={{ backgroundColor: 'red' }} onClick={this.props.close}>
+                        <button style={{ backgroundColor: '#f76874' }} onClick={this.props.close}>
                             Cancel
+                        </button>
+                        <button style={{ backgroundColor: '#6afc8a' }} onClick={() => this.props.save(this.createABCString())}>
+                            Save
                         </button>
                     </div>
                 </div>

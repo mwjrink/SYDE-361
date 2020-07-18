@@ -58,7 +58,7 @@ export const ButtonContainer = styled.div`
 
 export const Button = styled.button`
   padding: 10px;
-  border-radius: 50vh;
+  border-radius: 10px;
   border: none;
   background: ${accent_color};
   outline: none;
