@@ -58,8 +58,6 @@ class Import extends Component<any, any> {
 
     render() {
         return (
-            // <div className="App" >
-            //   <header className="App-header">
             <div className="popup">
                 <h2 style={{ color: 'black', textAlign: 'left', marginLeft: '0.5em' }}>Import:</h2>
                 <div className="drop-inner" ref={this.dropRef}>
@@ -92,8 +90,6 @@ class Import extends Component<any, any> {
                     </div>
                 </div>
             </div>
-            //   </header>
-            // </div>
         )
     }
 }

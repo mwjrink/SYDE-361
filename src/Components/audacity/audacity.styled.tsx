@@ -101,6 +101,9 @@ export const MainContentContainer = styled.div`
 export const InnerBranchesContainer = styled.div`
   border: none;
   height: 90%;
+  
+  font-size: 1.5rem;
+  color: grey;
 `;
 
 export const ButtonsContainer = styled.div`

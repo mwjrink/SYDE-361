@@ -36,6 +36,22 @@ button {
   border-radius: 5px;
   margin: 0px 5px;
   text-align: center;
+  width: 375px;
+  height: 165px;
+}
+
+.group-div-notelength {
+  padding: 15px;
+  border: solid 2px;
+  border-radius: 5px;
+  margin: 0px 5px;
+  text-align: center;
+  width: 200px;
+  height: 165px;
+
+  display: flex;
+  justify-content: start;
+  flex-wrap: wrap;
 }
 
 .group-div-optional {
@@ -43,9 +59,11 @@ button {
   border: dotted 2px;
   border-radius: 5px;
   margin: 0px 5px;
-  min-width: 125px;
-  min-height: 114px;
   text-align: center;
+  height: 165px;
+  display: flex;
+  justify-content: start;
+  flex-direction: column;
 }
 
 .select-button {

@@ -1,5 +1,2 @@
-trailingComma: "es5"
-tabWidth: 4
-semi: false
-singleQuote: true
-printWidth: 160
+printWidth: 120
+semi: true
