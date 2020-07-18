@@ -54,12 +54,19 @@ export function Audacity({ importTrack, generateTrack, manualTrack, tracks, remo
           <textarea />
         </ChatContainer> */}
                 <BranchContainer>
-                    Your Branch:
+                    Your Tracks:
                     <InnerBranchesContainer>
                         {tracks.map((track, index) => (
                             <Track key={index}>
                                 {track}
-                                <button style={{backgroundColor: "rgb(239, 239, 239)"}} onClick={() => removeTrack(index)}>X</button>
+                                <div>
+                                    <MasterButtonsContainer>
+                                        <PlaybackButton>▶</PlaybackButton>
+                                        <PlaybackButton>⏸</PlaybackButton>
+                                        <PlaybackButton>⏹</PlaybackButton>
+                                        <PlaybackButton onClick={() => removeTrack(index)}>X</PlaybackButton>
+                                    </MasterButtonsContainer>
+                                </div>
                             </Track>
                         ))}
                     </InnerBranchesContainer>
