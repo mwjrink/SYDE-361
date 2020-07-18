@@ -19,14 +19,14 @@ class Import extends Component<any, any> {
 
     componentDidMount() {
         let div = this.dropRef.current
-        div?.addEventListener('dragover', this.handleDrag)
-        div?.addEventListener('drop', this.handleDrop)
+        div ?.addEventListener('dragover', this.handleDrag)
+        div ?.addEventListener('drop', this.handleDrop)
     }
 
     componentWillUnmount() {
         let div = this.dropRef.current
-        div?.removeEventListener('dragover', this.handleDrag)
-        div?.removeEventListener('drop', this.handleDrop)
+        div ?.removeEventListener('dragover', this.handleDrag)
+        div ?.removeEventListener('drop', this.handleDrop)
     }
 
     handleDrag = (e: any) => {
@@ -72,7 +72,7 @@ class Import extends Component<any, any> {
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'space-between', margin: '10px' }}>
                     <div>
-                        <button onClick={this.startAudio} style={{ marginRight: '10px' }}>
+                        <button onClick={this.startAudio}>
                             Play
                         </button>
                         <button onClick={this.stopAudio}>Stop</button>
@@ -81,11 +81,11 @@ class Import extends Component<any, any> {
                         </div>
                     </div>
                     <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-end' }}>
-                        <button style={{ backgroundColor: 'green', marginRight: '10px', marginLeft: '10px' }} onClick={() => this.props.save(this.state.audio)}>
-                            Save
-                        </button>
-                        <button style={{ backgroundColor: 'red' }} onClick={this.props.close}>
+                        <button style={{ backgroundColor: '#f76874' }} onClick={this.props.close}>
                             Cancel
+                </button>
+                        <button style={{ backgroundColor: '#6afc8a'}} onClick={() => this.props.save(this.state.audio)}>
+                            Save
                         </button>
                     </div>
                 </div>

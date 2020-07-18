@@ -28,13 +28,7 @@ interface AudacityProps {
   removeTrack: (index: number) => void;
 }
 
-export function Audacity({
-  importTrack,
-  generateTrack,
-  manualTrack,
-  tracks,
-  removeTrack,
-}: AudacityProps) {
+export function Audacity({ importTrack, generateTrack, manualTrack, tracks, removeTrack }: AudacityProps) {
   return (
     <Container>
       <TopBarContainer>
@@ -48,12 +42,7 @@ export function Audacity({
       </TopBarContainer>
       <MasterContainer>
         Master:
-        <MasterCleff
-          abcNotation="K:C\n|: cccc|cccc|cccc|cccc :|"
-          parserParams={{}}
-          engraverParams={{ responsive: "resize" }}
-          renderParams={{ viewportHorizontal: true }}
-        />
+        <MasterCleff abcNotation="K:C\n|: cccc|cccc|cccc|cccc :|" parserParams={{}} engraverParams={{ responsive: "resize" }} renderParams={{ viewportHorizontal: true }} />
         <MasterButtonsContainer>
           <PlaybackButton>▶</PlaybackButton>
           <PlaybackButton>⏸</PlaybackButton>
@@ -73,7 +62,9 @@ export function Audacity({
               : tracks.map((track, index) => (
                   <Track key={index}>
                     {track}
-                    <button onClick={() => removeTrack(index)}>X</button>
+                    <button style={{ backgroundColor: "rgb(239, 239, 239)" }} onClick={() => removeTrack(index)}>
+                      X
+                    </button>
                   </Track>
                 ))}
           </InnerBranchesContainer>

@@ -17,10 +17,10 @@ label {
   margin: 20px;
 }
 
-.drop-inner { 
+.drop-inner {
   height: 300px;
   width: auto;
-  margin: 15px; 
+  margin: 15px;
   border: grey dashed 5px;
   display: flex;
   flex-direction: column;
@@ -31,8 +31,8 @@ button {
   height: 60px;
   width: 125px;
   border-radius: 10px;
-} 
+}
 
-.hidden { 
-  display: none; 
+.hidden {
+  display: none;
 }

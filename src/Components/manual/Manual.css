@@ -25,9 +25,22 @@ label {
 }
 
 button {
-  height: 60px;
-  width: 125px;
   border-radius: 10px;
+  border: none;
+  background: #64b5f6;
+  outline: none;
+  margin: 4px;
+  box-shadow: BoxShadow(4);
+}
+
+img {
+  cursor: pointer;
+}
+
+.small-button {
+  margin-left: 15px; 
+  height: 25px;
+  width: 60px;
 }
 
 .group-div {
@@ -100,6 +113,10 @@ border: black solid;
 }
 
 .hidden { 
-  display: none; 
+  display: none;
+}
+
+.invisible{
+  visibility: hidden;
 }
 

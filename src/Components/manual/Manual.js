@@ -58,6 +58,7 @@ class Manual extends Component {
     };
 
     this.registerPitch = this.registerPitch.bind(this);
+    this.clearPitch = this.clearPitch.bind(this);
     this.registerAccidental = this.registerAccidental.bind(this);
     this.registerLength = this.registerLength.bind(this);
     this.registerOther = this.registerOther.bind(this);
@@ -75,8 +76,11 @@ class Manual extends Component {
     this.setState({ staff: abcjs.renderAbc("staff", this.createABCString()) });
   }
 
+  clearPitch(event) {
+    this.setState({ selectedPitch: null });
+  }
+
   registerPitch(event) {
-    console.log(event.target.id);
     this.setState({ selectedPitch: event.target.id });
   }
 
@@ -102,7 +106,6 @@ class Manual extends Component {
   }
 
   registerOther(event) {
-    console.log(event.target.id);
     this.addABCVal(event.target.id);
   }
 
@@ -143,11 +146,7 @@ class Manual extends Component {
     if (abcjs.synth.supportsAudio()) {
       var visualObj = this.state.staff[0];
       var midiBuffer = this.state.midi;
-      window.AudioContext =
-        window.AudioContext ||
-        window.webkitAudioContext ||
-        navigator.mozAudioContext ||
-        navigator.msAudioContext;
+      window.AudioContext = window.AudioContext || window.webkitAudioContext || navigator.mozAudioContext || navigator.msAudioContext;
       var audioContext = new window.AudioContext();
       audioContext.resume().then(function () {
         return midiBuffer
@@ -218,12 +217,26 @@ class Manual extends Component {
         <div
           style={{
             flex: "1",
+            display: "flex",
             overflowY: "auto",
-            width: "inherit",
+            width: "100%",
             alignSelf: "center",
+            justifyContent: "space-between",
           }}
         >
+          <div style={{ minWidth: "200px" }}></div>
           <div id="staff"></div>
+          <div style={{ minWidth: "200px", textAlign: "left" }}>
+            <u>Currently Selected</u>
+            <br></br>Pitch: {this.state.selectedPitch}
+            {this.state.selectedPitch != null ? (
+              <button className="small-button" onClick={this.clearPitch}>
+                Clear
+              </button>
+            ) : (
+              ""
+            )}
+          </div>
         </div>
         <div
           style={{
@@ -246,282 +259,50 @@ class Manual extends Component {
           >
             <label>1. Pitch or Rest</label>
             <div className="group-div">
-              <img
-                id="C"
-                className="select-button-pitch"
-                onClick={this.registerPitch}
-                src={C3}
-                height={"40px"}
-                width={"40px"}
-                alt="C"
-              />
-              <img
-                id="D"
-                className="select-button-pitch"
-                onClick={this.registerPitch}
-                src={D3}
-                height={"40px"}
-                width={"40px"}
-                alt="D"
-              />
-              <img
-                id="E"
-                className="select-button-pitch"
-                onClick={this.registerPitch}
-                src={E3}
-                height={"40px"}
-                width={"40px"}
-                alt="E"
-              />
-              <img
-                id="F"
-                className="select-button-pitch"
-                onClick={this.registerPitch}
-                src={F3}
-                height={"40px"}
-                width={"40px"}
-                alt="F"
-              />
-              <img
-                id="G"
-                className="select-button-pitch"
-                onClick={this.registerPitch}
-                src={G3}
-                height={"40px"}
-                width={"40px"}
-                alt="G"
-              />
-              <img
-                id="A"
-                className="select-button-pitch"
-                onClick={this.registerPitch}
-                src={A4}
-                height={"40px"}
-                width={"40px"}
-                alt="A"
-              />
-              <img
-                id="B"
-                className="select-button-pitch"
-                onClick={this.registerPitch}
-                src={B4}
-                height={"40px"}
-                width={"40px"}
-                alt="B"
-              />
-              <img
-                id="c"
-                className="select-button-pitch"
-                onClick={this.registerPitch}
-                src={C4}
-                height={"40px"}
-                width={"40px"}
-                alt="C"
-              />
-              <img
-                id="d"
-                className="select-button-pitch"
-                onClick={this.registerPitch}
-                src={D4}
-                height={"40px"}
-                width={"40px"}
-                alt="D"
-              />
-              <img
-                id="e"
-                className="select-button-pitch"
-                onClick={this.registerPitch}
-                src={E4}
-                height={"40px"}
-                width={"40px"}
-                alt="E"
-              />
-              <img
-                id="f"
-                className="select-button-pitch"
-                onClick={this.registerPitch}
-                src={F4}
-                height={"40px"}
-                width={"40px"}
-                alt="F"
-              />
-              <img
-                id="g"
-                className="select-button-pitch"
-                onClick={this.registerPitch}
-                src={G4}
-                height={"40px"}
-                width={"40px"}
-                alt="G"
-              />
-              <img
-                id="a"
-                className="select-button-pitch"
-                onClick={this.registerPitch}
-                src={A5}
-                height={"40px"}
-                width={"40px"}
-                alt="A"
-              />
-              <img
-                id="b"
-                className="select-button-pitch"
-                onClick={this.registerPitch}
-                src={B5}
-                height={"40px"}
-                width={"40px"}
-                alt="B"
-              />
-              <img
-                id="c'"
-                className="select-button-pitch"
-                onClick={this.registerPitch}
-                src={C5}
-                height={"40px"}
-                width={"40px"}
-                alt="C"
-              />
-              <img
-                id="z"
-                className="select-button-pitch"
-                onClick={this.registerPitch}
-                src={white}
-                height={"40px"}
-                width={"40px"}
-                alt=""
-              />
+              <img id="C" className="select-button-pitch" onClick={this.registerPitch} src={C3} height={"40px"} width={"40px"} alt="C" />
+              <img id="D" className="select-button-pitch" onClick={this.registerPitch} src={D3} height={"40px"} width={"40px"} alt="D" />
+              <img id="E" className="select-button-pitch" onClick={this.registerPitch} src={E3} height={"40px"} width={"40px"} alt="E" />
+              <img id="F" className="select-button-pitch" onClick={this.registerPitch} src={F3} height={"40px"} width={"40px"} alt="F" />
+              <img id="G" className="select-button-pitch" onClick={this.registerPitch} src={G3} height={"40px"} width={"40px"} alt="G" />
+              <img id="A" className="select-button-pitch" onClick={this.registerPitch} src={A4} height={"40px"} width={"40px"} alt="A" />
+              <img id="B" className="select-button-pitch" onClick={this.registerPitch} src={B4} height={"40px"} width={"40px"} alt="B" />
+              <img id="c" className="select-button-pitch" onClick={this.registerPitch} src={C4} height={"40px"} width={"40px"} alt="C" />
+              <img id="d" className="select-button-pitch" onClick={this.registerPitch} src={D4} height={"40px"} width={"40px"} alt="D" />
+              <img id="e" className="select-button-pitch" onClick={this.registerPitch} src={E4} height={"40px"} width={"40px"} alt="E" />
+              <img id="f" className="select-button-pitch" onClick={this.registerPitch} src={F4} height={"40px"} width={"40px"} alt="F" />
+              <img id="g" className="select-button-pitch" onClick={this.registerPitch} src={G4} height={"40px"} width={"40px"} alt="G" />
+              <img id="a" className="select-button-pitch" onClick={this.registerPitch} src={A5} height={"40px"} width={"40px"} alt="A" />
+              <img id="b" className="select-button-pitch" onClick={this.registerPitch} src={B5} height={"40px"} width={"40px"} alt="B" />
+              <img id="c'" className="select-button-pitch" onClick={this.registerPitch} src={C5} height={"40px"} width={"40px"} alt="C" />
+              <img id="z" className="select-button-pitch" onClick={this.registerPitch} src={white} height={"40px"} width={"40px"} alt="" />
             </div>
           </div>
-          <div style={{ textAlign: "left" }}>
+          <div style={{ textAlign: "left" }} className={!this.state.selectedPitch ? "invisible" : ""}>
             <label>2. Accidentals</label>
             <div className="group-div-optional">
-              <img
-                id="^"
-                className="select-button"
-                onClick={this.registerAccidental}
-                src={Sharp}
-                height={"25px"}
-                width={"25px"}
-                alt="Sharp"
-              />
-              <img
-                id="="
-                className="select-button"
-                onClick={this.registerAccidental}
-                src={Natural}
-                height={"25px"}
-                width={"25px"}
-                alt="Natural"
-              />
-              <img
-                id="_"
-                className="select-button"
-                onClick={this.registerAccidental}
-                src={Flat}
-                height={"25px"}
-                width={"25px"}
-                alt="Flat"
-              />
+              <img id="^" className="select-button" onClick={this.registerAccidental} src={Sharp} height={"25px"} width={"25px"} alt="Sharp" />
+              <img id="=" className="select-button" onClick={this.registerAccidental} src={Natural} height={"25px"} width={"25px"} alt="Natural" />
+              <img id="_" className="select-button" onClick={this.registerAccidental} src={Flat} height={"25px"} width={"25px"} alt="Flat" />
             </div>
           </div>
-          <div style={{ textAlign: "left" }}>
+          <div style={{ textAlign: "left" }} className={!this.state.selectedPitch ? "invisible" : ""}>
             <label>3. Note Length</label>
             <div className="group-div-notelength">
-              <img
-                id="4"
-                className="select-button"
-                onClick={this.registerLength}
-                src={WholeNote}
-                height={"25px"}
-                width={"25px"}
-                alt="WholeNote"
-              />
-              <img
-                id="3"
-                className="select-button"
-                onClick={this.registerLength}
-                src={DHalfNote}
-                height={"25px"}
-                width={"25px"}
-                alt="DHalfNote"
-              />
-              <img
-                id="2"
-                className="select-button"
-                onClick={this.registerLength}
-                src={HalfNote}
-                height={"25px"}
-                width={"25px"}
-                alt="HalfNote"
-              />
-              <img
-                id="3/2"
-                className="select-button"
-                onClick={this.registerLength}
-                src={DQuarterNote}
-                height={"25px"}
-                width={"25px"}
-                alt="DQuarterNote"
-              />
-              <img
-                id="1"
-                className="select-button"
-                onClick={this.registerLength}
-                src={QuarterNote}
-                height={"25px"}
-                width={"25px"}
-                alt="QuarterNote"
-              />
-              <img
-                id="3/4"
-                className="select-button"
-                onClick={this.registerLength}
-                src={DEighthNote}
-                height={"25px"}
-                width={"25px"}
-                alt="DEighthNote"
-              />
-              <img
-                id="1/2"
-                className="select-button"
-                onClick={this.registerLength}
-                src={EighthNote}
-                height={"25px"}
-                width={"25px"}
-                alt="EighthNote"
-              />
-              <img
-                id="1/4"
-                className="select-button"
-                onClick={this.registerLength}
-                src={SixteenthNote}
-                height={"25px"}
-                width={"25px"}
-                alt="SixteenthNote"
-              />
+              <img id="4" className="select-button" onClick={this.registerLength} src={WholeNote} height={"25px"} width={"25px"} alt="WholeNote" />
+              <img id="3" className="select-button" onClick={this.registerLength} src={DHalfNote} height={"25px"} width={"25px"} alt="DHalfNote" />
+              <img id="2" className="select-button" onClick={this.registerLength} src={HalfNote} height={"25px"} width={"25px"} alt="HalfNote" />
+              <img id="3/2" className="select-button" onClick={this.registerLength} src={DQuarterNote} height={"25px"} width={"25px"} alt="DQuarterNote" />
+              <img id="1" className="select-button" onClick={this.registerLength} src={QuarterNote} height={"25px"} width={"25px"} alt="QuarterNote" />
+              <img id="3/4" className="select-button" onClick={this.registerLength} src={DEighthNote} height={"25px"} width={"25px"} alt="DEighthNote" />
+              <img id="1/2" className="select-button" onClick={this.registerLength} src={EighthNote} height={"25px"} width={"25px"} alt="EighthNote" />
+              <img id="1/4" className="select-button" onClick={this.registerLength} src={SixteenthNote} height={"25px"} width={"25px"} alt="SixteenthNote" />
             </div>
           </div>
           <div style={{ textAlign: "left" }}>
             <label>4. Other</label>
             <div className="group-div-optional">
-              <img
-                id="|"
-                className="select-button"
-                onClick={this.registerOther}
-                src={BarLine}
-                height={"25px"}
-                width={"25px"}
-                alt="BarLine"
-              />
-              <img
-                id="|]"
-                className="select-button"
-                onClick={this.registerOther}
-                src={DBarLine}
-                height={"25px"}
-                width={"25px"}
-                alt="DBarLine"
-              />
+              <img id="|" className="select-button" onClick={this.registerOther} src={BarLine} height={"25px"} width={"25px"} alt="BarLine" />
+              <img id="|]" className="select-button" onClick={this.registerOther} src={DBarLine} height={"25px"} width={"25px"} alt="DBarLine" />
               <button
                 id="&#10;"
                 className="select-button"
@@ -532,7 +313,7 @@ class Manual extends Component {
                 }}
                 onClick={this.registerOther}
               >
-                New <br/> Line
+                New <br /> Line
               </button>
             </div>
           </div>
@@ -554,7 +335,7 @@ class Manual extends Component {
           >
             <label style={{ marginLeft: "0" }}>ABC Notation:</label>
             <button
-              style={{ height: "20px", width: "40px", outline: 'none' }}
+              style={{ height: "20px", width: "40px", outline: "none" }}
               onClick={() =>
                 this.setState((current) => ({
                   ...current,
@@ -565,15 +346,7 @@ class Manual extends Component {
               v
             </button>
           </div>
-          {this.state.abcShowing ? (
-            <textarea
-              style={{ minHeight: "75px" }}
-              value={this.state.ABCvalue[""]}
-              onChange={this.updateStaff}
-            ></textarea>
-          ) : (
-            <></>
-          )}
+          {this.state.abcShowing ? <textarea style={{ minHeight: "75px" }} value={this.state.ABCvalue[""]} onChange={this.updateStaff}></textarea> : <></>}
         </div>
         <div
           style={{
@@ -583,9 +356,7 @@ class Manual extends Component {
           }}
         >
           <div>
-            <button onClick={this.startAudio} style={{ marginRight: "10px" }}>
-              Play
-            </button>
+            <button onClick={this.startAudio}>Play</button>
             <button onClick={this.stopAudio}>Stop</button>
             <div className="audio-error" style={{ display: "none" }}>
               Audio is not supported in this browser.
@@ -604,9 +375,7 @@ class Manual extends Component {
 
             <div className={!this.state.openAdvanced ? "hidden" : "form-popup"}>
               <form action="/action_page.php" className="form-container">
-                <h3 style={{ color: "black", marginBottom: "10px" }}>
-                  Advanced Options
-                </h3>
+                <h3 style={{ color: "black", marginBottom: "10px" }}>Advanced Options</h3>
                 <div style={{ flex: "1" }}>
                   <table
                     style={{
@@ -627,14 +396,7 @@ class Manual extends Component {
                           </label>
                         </td>
                         <td>
-                          <input
-                            type="text"
-                            id="T"
-                            placeholder="Enter Title"
-                            defaultValue={this.state.ABCvalue["T"]}
-                            onChange={this.updateProp}
-                            required
-                          ></input>
+                          <input type="text" id="T" placeholder="Enter Title" defaultValue={this.state.ABCvalue["T"]} onChange={this.updateProp} required></input>
                         </td>
                       </tr>
                       <tr>
@@ -644,14 +406,7 @@ class Manual extends Component {
                           </label>
                         </td>
                         <td>
-                          <input
-                            type="text"
-                            id="K"
-                            placeholder="Enter Key (append 'm' for minor)"
-                            defaultValue={this.state.ABCvalue["K"]}
-                            onChange={this.updateProp}
-                            required
-                          ></input>
+                          <input type="text" id="K" placeholder="Enter Key (append 'm' for minor)" defaultValue={this.state.ABCvalue["K"]} onChange={this.updateProp} required></input>
                         </td>
                       </tr>
                       <tr>
@@ -661,14 +416,7 @@ class Manual extends Component {
                           </label>
                         </td>
                         <td>
-                          <input
-                            type="text"
-                            id="M"
-                            placeholder="Enter Meter (ex. 4/4)"
-                            defaultValue={this.state.ABCvalue["M"]}
-                            onChange={this.updateProp}
-                            required
-                          ></input>
+                          <input type="text" id="M" placeholder="Enter Meter (ex. 4/4)" defaultValue={this.state.ABCvalue["M"]} onChange={this.updateProp} required></input>
                         </td>
                       </tr>
                       <tr>
@@ -678,14 +426,7 @@ class Manual extends Component {
                           </label>
                         </td>
                         <td>
-                          <input
-                            type="text"
-                            id="Q"
-                            placeholder="Enter Tempo"
-                            defaultValue={this.state.ABCvalue["Q"]}
-                            onChange={this.updateProp}
-                            required
-                          ></input>
+                          <input type="text" id="Q" placeholder="Enter Tempo" defaultValue={this.state.ABCvalue["Q"]} onChange={this.updateProp} required></input>
                         </td>
                       </tr>
                       <tr>
@@ -695,14 +436,7 @@ class Manual extends Component {
                           </label>
                         </td>
                         <td>
-                          <input
-                            type="text"
-                            id="R"
-                            placeholder="Enter Rhythm"
-                            defaultValue={this.state.ABCvalue["R"]}
-                            onChange={this.updateProp}
-                            required
-                          ></input>
+                          <input type="text" id="R" placeholder="Enter Rhythm" defaultValue={this.state.ABCvalue["R"]} onChange={this.updateProp} required></input>
                         </td>
                       </tr>
                     </tbody>
@@ -715,20 +449,10 @@ class Manual extends Component {
                 </div>
               </form>
             </div>
-            <button
-              style={{
-                backgroundColor: "green",
-                marginRight: "10px",
-                marginLeft: "10px",
-              }}
-              onClick={() => this.props.save(this.createABCString())}
-            >
+            <button style={{ backgroundColor: "#6afc8a" }} onClick={() => this.props.save(this.createABCString())}>
               Save
             </button>
-            <button
-              style={{ backgroundColor: "red" }}
-              onClick={this.props.close}
-            >
+            <button style={{ backgroundColor: "#f76874" }} onClick={this.props.close}>
               Cancel
             </button>
           </div>
