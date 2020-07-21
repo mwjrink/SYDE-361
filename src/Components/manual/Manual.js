@@ -9,11 +9,7 @@ import QuarterNote from "./images/QuarterNote.png";
 import DEighthNote from "./images/DEighthNote.png";
 import EighthNote from "./images/EighthNote.png";
 import SixteenthNote from "./images/SixteenthNote.png";
-// import WholeRest from './images/WholeRest.png';
-// import HalfRest from './images/HalfRest.png';
 import QuarterRest from './images/QuarterRest.png';
-// import EighthRest from './images/EighthRest.png';
-// import SixteenthRest from './images/SixteenthRest.png';
 import Sharp from "./images/Sharp.png";
 import Natural from "./images/Natural.png";
 import Flat from "./images/Flat.png";
@@ -57,9 +53,14 @@ class Manual extends Component {
             midi: new abcjs.synth.CreateSynth(),
             selectedPitch: null,
             abcShowing: false,
-            showHelp: false
+            showHelp: false,
+            lastNoteAdded: {
+                startChar: null,
+                endChar: null
+            }
         };
 
+        this.removeNote = this.removeNote.bind(this);
         this.registerPitch = this.registerPitch.bind(this);
         this.clearPitch = this.clearPitch.bind(this);
         this.registerAccidental = this.registerAccidental.bind(this);
@@ -76,7 +77,43 @@ class Manual extends Component {
     }
 
     componentDidMount() {
-        this.setState({ staff: abcjs.renderAbc("staff", this.createABCString()) });
+        this.setState({
+            staff: this.createEditor()
+        })
+    }
+
+    createEditor() {
+        return new abcjs.Editor("abc", {
+            canvas_id: "staff",
+            warnings_id: "warnings",
+            abcjsParams: {
+                clickListener: this.removeNote
+            }
+        })
+    }
+
+    removeNote(note) {
+        var offset = 0;
+        // console.log(note.startChar, note.endChar)
+
+        for (const [key, value] of Object.entries(this.state.ABCvalue)) {
+            if (key !== "") {
+                //SEE CREATEABCSTRING() BELOW
+                offset += key.length + value.length + 4;
+            }
+        }
+
+        if (note.startChar - offset != 0) {
+            const newVal = {
+                ...this.state.ABCvalue,
+                "": this.state.ABCvalue[""].slice(0, note.startChar - offset) + this.state.ABCvalue[""].slice(note.endChar - offset),
+            };
+            this.setState({ ABCvalue: newVal }, () => {
+                this.setState({
+                    staff: this.createEditor()
+                })
+            });
+        }
     }
 
     clearPitch(event) {
@@ -88,7 +125,6 @@ class Manual extends Component {
     }
 
     registerAccidental(event) {
-        console.log(event.target.id);
         if (this.state.selectedPitch !== null) {
             this.setState({
                 selectedPitch: event.target.id + this.state.selectedPitch,
@@ -99,7 +135,6 @@ class Manual extends Component {
     }
 
     registerLength(event) {
-        console.log(event.target.id);
         if (this.state.selectedPitch !== null) {
             this.addABCVal(this.state.selectedPitch + event.target.id);
             this.setState({ selectedPitch: null });
@@ -113,14 +148,23 @@ class Manual extends Component {
     }
 
     addABCVal(val) {
+        const newNote = {
+            "startChar": this.createABCString().trim().length + 1,
+            "endChar": this.createABCString().trim().length + val.length
+        }
+
+        this.setState({
+            lastNoteAdded: newNote
+        })
+
         const newVal = {
             ...this.state.ABCvalue,
             "": this.state.ABCvalue[""] + " " + val,
         };
         this.setState({ ABCvalue: newVal }, () => {
             this.setState({
-                staff: abcjs.renderAbc("staff", this.createABCString()),
-            });
+                staff: this.createEditor()
+            })
         });
     }
 
@@ -128,8 +172,8 @@ class Manual extends Component {
         const newVal = { ...this.state.ABCvalue, "": event.target.value };
         this.setState({ ABCvalue: newVal }, () => {
             this.setState({
-                staff: abcjs.renderAbc("staff", this.createABCString()),
-            });
+                staff: this.createEditor()
+            })
         });
     }
 
@@ -190,7 +234,9 @@ class Manual extends Component {
     }
 
     closeAdvanced() {
-        this.setState({ staff: abcjs.renderAbc("staff", this.createABCString()) });
+        this.setState({
+            staff: this.createEditor()
+        });
         this.toggleAdvanced();
     }
 
@@ -206,7 +252,7 @@ class Manual extends Component {
         // const [abcShowing, setAbcShowing] = useState(false);
 
         return (
-            <div className="popup">
+            <div className="popup" onKeyDown={this.log}>
                 <div style={{
                     display: "flex",
                     flexDirection: "row",
@@ -244,7 +290,7 @@ class Manual extends Component {
                             <br />4. Add bar lines (if necessary)
                             <br />5. Repeat
                             <br />
-                            <br />If an error is made, remove the corresponding note from the ABC Notation textbox in the dropdown
+                            <br />Click on the note to remove.
                             <br />
                             <br />Alternatively, if you are familiar with ABC Notation, feel free to input using the ABC Notation textbox!
                             <br />
@@ -395,8 +441,9 @@ class Manual extends Component {
                             {this.state.abcShowing ? 'Hide' : 'Show'}
                         </button>
                     </div>
-                    {this.state.abcShowing ? <textarea style={{ minHeight: "75px" }} value={this.state.ABCvalue[""]} onChange={this.updateStaff}></textarea> : <></>}
-        </div>
+                    {this.state.abcShowing ? <textarea style={{ minHeight: "75px" }} value={this.state.ABCvalue[""]} onChange={this.updateStaff}></textarea> : ''}
+                    <textarea id="abc" className={'hidden'} value={this.createABCString()} readOnly> </textarea>
+                </div>
                 <div
                     style={{
                         display: "flex",
