@@ -69,7 +69,7 @@ export function Audacity({ importTrack, generateTrack, manualTrack, tracks, remo
                   <div>
                     {track[2] != 'Import' ?
                       <button style={{ backgroundColor: "rgb(239, 239, 239)" }} onClick={() => openTrack(index)}>
-                        Open
+                        Edit
                     </button>
                       : ''}
                     <button style={{ backgroundColor: "rgb(239, 239, 239)" }} onClick={() => playTrack(index)}>

@@ -26,7 +26,7 @@ function App() {
   const [manualModalOpen, setManualModelOpen] = useState(false);
   const [tracks, setTracks] = useState<any>([]);
   let trackAudio = new abcjs.synth.CreateSynth();
-  let trackIndex = null;
+  const [trackIndex, setTrackIndex] = useState(-1);
 
   const openImportModal = () => {
     setImportModelOpen(true);
@@ -34,6 +34,7 @@ function App() {
 
   const closeImportModal = () => {
     setImportModelOpen(false);
+    setTrackIndex(-1);
   };
 
   const openGenerateModal = () => {
@@ -42,6 +43,7 @@ function App() {
 
   const closeGenerateModal = () => {
     setGenerateModelOpen(false);
+    setTrackIndex(-1);
   };
 
   const openManualModal = () => {
@@ -50,15 +52,27 @@ function App() {
 
   const closeManualModal = () => {
     setManualModelOpen(false);
+    setTrackIndex(-1);
   };
 
+  const createABCString = (abcDict: any) => {
+    var abcString = "";
+    for (const [key, value] of Object.entries(abcDict)) {
+        if (key !== "") {
+            abcString += key + ": " + value + " \n";
+        } else {
+            abcString += value;
+        }
+    }
+    return abcString;
+  }
+
   const play = async (index: number) => {
-    console.log(tracks[index]);
     if (tracks[index][2] == 'Manual' || tracks[index][2] == 'Generate') {
       trackAudio = new abcjs.synth.CreateSynth();
       if (abcjs.synth.supportsAudio()) {
         var midiBuffer = trackAudio;
-        var visualObj = await abcjs.renderAbc("staff", tracks[index][1]);
+        var visualObj = await abcjs.renderAbc("staff", tracks[index][2] == 'Manual' ? createABCString(tracks[index][1]): tracks[index][1]);
         var audioContext = new window.AudioContext();
         audioContext.resume().then(function () {
           return midiBuffer
@@ -90,17 +104,19 @@ function App() {
 
   const stop = () => {
     trackAudio.pause();
+    trackAudio.currentTime = 0;
   }
 
   const open = (index: number) => {
-    trackIndex = index;
+    trackAudio.pause();
+    trackAudio.currentTime = 0;
+    setTrackIndex(index);
     if (tracks[index][2] == 'Manual') {
       setManualModelOpen(true);
     }
     else if (tracks[index][2] == 'Generate') {
       setGenerateModelOpen(true);
     }
-    //TO-DO attach open to the modal
   }
 
   const setMusic = (url: {}) => {
@@ -108,8 +124,27 @@ function App() {
     closeGenerateModal();
     closeManualModal();
     if (!url) return;
-    setTracks((current: any) => [...current, Object.values(url)]);
+    if (Object.values(url)[3] != -1){
+      setTracks((current: any) => {
+        const val = current.slice(0);
+        val[Object.values(url)[3] as any] = Object.values(url);
+        return val;
+      })
+    }
+    else {
+      setTracks((current: any) => [...current, Object.values(url)]);
+    }
   };
+
+  const removeTrack = (index: number) => {
+    trackAudio.pause();
+    trackAudio.currentTime = 0;
+    setTracks((current: any) => {
+      const val = current.slice(0);
+      val.splice(index, 1);
+      return val;
+    })
+  }
 
   return (
     <div className="App">
@@ -118,27 +153,29 @@ function App() {
       </Modal>
       <Modal open={generateModalOpen} close={closeGenerateModal}>
         <Abcts
-          abcNotation="K:C\n|::|"
+          abcNotation={trackIndex === -1? "K:C\n|::|" : tracks[trackIndex][1]}
           parserParams={{}}
           engraverParams={{ responsive: "resize" }}
           renderParams={{ viewportHorizontal: true }}
           close={closeGenerateModal}
           setMusic={setMusic}
+          existingIndex={trackIndex}
         />
       </Modal>
       <Modal open={manualModalOpen} close={closeManualModal}>
-        <Manual close={closeManualModal} save={setMusic}/>
+        <Manual close={closeManualModal} save={setMusic} abcNotation={trackIndex === -1? null : tracks[trackIndex][1]} existingIndex={trackIndex}/>
       </Modal>
       <Router history={history}>
         <Switch>
           <Route path="/generateui">
             <Abcts
-              abcNotation="K:C\n|::|"
+              abcNotation={trackIndex === -1? "K:C\n|::|" : tracks[trackIndex][1]}
               parserParams={{}}
               engraverParams={{ responsive: "resize" }}
               renderParams={{ viewportHorizontal: true }}
               close={closeGenerateModal}
               setMusic={setMusic}
+              existingIndex={trackIndex}
             />
           </Route>
           <Route path="/git-thing">
@@ -148,7 +185,7 @@ function App() {
             <Import />
           </Route>
           <Route path="/manual">
-            <Manual close={() => { }} save={() => { }} />
+            <Manual close={() => { }} save={() => { }} abcNotation={trackIndex === -1? null : tracks[trackIndex][1]} existingIndex={trackIndex} />
           </Route>
           <Route path="/">
             <Audacity
@@ -156,13 +193,7 @@ function App() {
               generateTrack={openGenerateModal}
               manualTrack={openManualModal}
               tracks={tracks}
-              removeTrack={(index) =>
-                setTracks((current: any) => {
-                  const val = current.slice(0);
-                  val.splice(index, 1);
-                  return val;
-                })
-              }
+              removeTrack={removeTrack}
               playTrack={play}
               stopTrack={stop}
               openTrack={open}

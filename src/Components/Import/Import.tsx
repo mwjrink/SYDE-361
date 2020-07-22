@@ -15,6 +15,8 @@ class Import extends Component<any, any> {
 
         this.startAudio = this.startAudio.bind(this)
         this.stopAudio = this.stopAudio.bind(this)
+        this.save = this.save.bind(this)
+        this.close = this.close.bind(this)
     }
 
     componentDidMount() {
@@ -37,7 +39,6 @@ class Import extends Component<any, any> {
     handleDrop = (e: any) => {
         e.preventDefault()
         e.stopPropagation()
-        console.log(e.dataTransfer.files)
         if (e.dataTransfer.files && e.dataTransfer.files.length === 1 && e.dataTransfer.files[0].type === 'audio/mpeg') {
             this.setState({ file: e.dataTransfer.files[0] }, () => {
                 this.setState({ audio: new Audio(URL.createObjectURL(this.state.file)) })
@@ -54,6 +55,19 @@ class Import extends Component<any, any> {
 
     stopAudio() {
         this.state.audio.pause()
+        this.state.audio.currentTime = 0;
+    }
+
+    save() {
+        this.state.audio.pause()
+        this.state.audio.currentTime = 0;
+        this.props.save({title: this.state.file.name, audio: this.state.audio, type: 'Import', index: -1})
+    }
+
+    close() {
+        this.state.audio.pause()
+        this.state.audio.currentTime = 0;
+        this.props.close()
     }
 
     render() {
@@ -81,10 +95,10 @@ class Import extends Component<any, any> {
                         </div>
                     </div>
                     <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-end' }}>
-                        <button style={{ backgroundColor: '#f76874' }} onClick={this.props.close}>
+                        <button style={{ backgroundColor: '#f76874' }} onClick={this.close}>
                             Cancel
                 </button>
-                        <button style={{ backgroundColor: '#6afc8a'}} onClick={() => this.props.save({title: this.state.file.name, audio: this.state.audio, type: 'Import'})}>
+                        <button style={{ backgroundColor: '#6afc8a'}} onClick={this.save}>
                             Save
                         </button>
                     </div>

@@ -20,6 +20,7 @@ export class Abcts extends Component<
         renderParams: object
         close: () => void
         setMusic: (music: any) => void
+        existingIndex: Number
     },
     abcState
     > {
@@ -36,6 +37,7 @@ export class Abcts extends Component<
             renderParams: object
             close: () => void
             setMusic: (title: string) => void
+            existingIndex: Number
         }>
     ) {
         super(props)
@@ -54,6 +56,8 @@ export class Abcts extends Component<
         this.componentDidMount = this.componentDidMount.bind(this)
         this.componentDidUpdate = this.componentDidUpdate.bind(this)
         this.render = this.render.bind(this)
+        this.close = this.close.bind(this)
+        this.save = this.save.bind(this)
     }
 
     renderAbcNotation(abcNotation: string, parserParams: object, engraverParams: object, renderParams: object) {
@@ -61,14 +65,32 @@ export class Abcts extends Component<
     }
 
     componentDidMount() {
-        const { abcNotation, parserParams, engraverParams, renderParams } = this.props
+        const { abcNotation, parserParams, engraverParams, renderParams, existingIndex } = this.props
         this.renderAbcNotation(abcNotation, parserParams, engraverParams, renderParams)
-        this.regenerate()
+        if(existingIndex === -1){
+            this.regenerate()
+        }
+        else{
+            this.setState((current) => ({
+                ...current,
+                abcNotation: abcNotation
+            }))
+        }
     }
 
     componentDidUpdate() {
         const { abcNotation, parserParams, engraverParams, renderParams } = this.state
         this.renderAbcNotation(abcNotation, parserParams, engraverParams, renderParams)
+    }
+
+    close() {
+        this.midi.stop();
+        this.props.close();
+    }
+
+    save() {
+        this.midi.stop();
+        this.props.setMusic({title: 'Generated', abcNotation: this.state.abcNotation, type: 'Generate', index: this.props.existingIndex});
     }
 
     play() {
@@ -159,8 +181,8 @@ export class Abcts extends Component<
                     </div>
                     <Button onClick={() => this.regenerate()}>Generate</Button>
                     <div>
-                        <Button style={{ backgroundColor: '#f76874' }} onClick={() => this.props.close()}>Cancel</Button>
-                        <Button style={{ backgroundColor: '#6afc8a' }} onClick={() => this.props.setMusic({title: 'Generated', abcNotation: this.state.abcNotation, type: 'Generate'})}>Save</Button>
+                        <Button style={{ backgroundColor: '#f76874' }} onClick={this.close}>Cancel</Button>
+                        <Button style={{ backgroundColor: '#6afc8a' }} onClick={this.save}>Save</Button>
                     </div>
                 </ButtonContainer>
             </Container>

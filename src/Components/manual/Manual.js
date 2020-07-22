@@ -35,8 +35,8 @@ import C5 from "./images/C5.png";
 import white from "./images/white.png";
 
 class Manual extends Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         //ABCvalue[X, Title, Key, Meter, Tempo, Rhythm, UNL, Body]
         this.state = {
             ABCvalue: {
@@ -74,12 +74,24 @@ class Manual extends Component {
         this.toggleAdvanced = this.toggleAdvanced.bind(this);
         this.updateProp = this.updateProp.bind(this);
         this.closeAdvanced = this.closeAdvanced.bind(this);
+        this.save = this.save.bind(this)
+        this.close = this.close.bind(this)
     }
 
     componentDidMount() {
         this.setState({
             staff: this.createEditor()
         })
+
+        if (this.props.abcNotation != null) {
+            this.setState({
+                ABCvalue: this.props.abcNotation
+            }, () => {
+                this.setState({
+                    staff: this.createEditor()
+                })
+            })
+        }
     }
 
     createEditor() {
@@ -94,7 +106,6 @@ class Manual extends Component {
 
     removeNote(note) {
         var offset = 0;
-        // console.log(note.startChar, note.endChar)
 
         for (const [key, value] of Object.entries(this.state.ABCvalue)) {
             if (key !== "") {
@@ -189,26 +200,23 @@ class Manual extends Component {
         return abcString;
     }
 
-    startAudio() {
+    async startAudio() {
         if (abcjs.synth.supportsAudio()) {
-            var visualObj = this.state.staff[0];
+            var visualObj = await abcjs.renderAbc("audioStaff", this.createABCString());
             var midiBuffer = this.state.midi;
             window.AudioContext = window.AudioContext || window.webkitAudioContext || navigator.mozAudioContext || navigator.msAudioContext;
             var audioContext = new window.AudioContext();
             audioContext.resume().then(function () {
                 return midiBuffer
                     .init({
-                        visualObj: visualObj,
+                        visualObj: visualObj[0],
                         audioContext: audioContext,
-                        millisecondsPerMeasure: visualObj.millisecondsPerMeasure(),
+                        millisecondsPerMeasure: visualObj[0].millisecondsPerMeasure(),
                     })
                     .then(function (response) {
-                        // console.log(response); // this contains the list of notes that were loaded.
-                        // midiBuffer.prime actually builds the output buffer.
                         return midiBuffer.prime();
                     })
                     .then(function () {
-                        // At this point, everything slow has happened. midiBuffer.start will return very quickly and will start playing very quickly without lag.
                         midiBuffer.start();
                         return Promise.resolve();
                     })
@@ -248,9 +256,17 @@ class Manual extends Component {
         this.setState({ ABCvalue: newVal });
     }
 
-    render() {
-        // const [abcShowing, setAbcShowing] = useState(false);
+    save() {
+        this.state.midi.stop();
+        this.props.save({ title: this.state.ABCvalue['T'], abcNotation: this.state.ABCvalue, type: 'Manual', index: this.props.existingIndex });
+    }
 
+    close() {
+        this.state.midi.stop();
+        this.props.close()
+    }
+
+    render() {
         return (
             <div className="popup" onKeyDown={this.log}>
                 <div style={{
@@ -318,19 +334,7 @@ class Manual extends Component {
                         justifyContent: "center",
                     }}
                 >
-                    {/* <div style={{ minWidth: "150px" }}></div> */}
                     <div id="staff"></div>
-                    {/* <div style={{ minWidth: "150px", textAlign: "left" }}>
-            <u>Currently Selected</u>
-            <br></br>Pitch: {this.state.selectedPitch}
-            {this.state.selectedPitch != null ? (
-              <button className="small-button" onClick={this.clearPitch}>
-                Clear
-              </button>
-            ) : (
-              ""
-            )}
-          </div> */}
                 </div>
                 <div
                     style={{
@@ -452,6 +456,7 @@ class Manual extends Component {
                     }}
                 >
                     <div>
+                        <div id="audioStaff" hidden> </div>
                         <button onClick={this.startAudio}>Play</button>
                         <button onClick={this.stopAudio}>Stop</button>
                         <div className="audio-error" style={{ display: "none" }}>
@@ -545,10 +550,10 @@ class Manual extends Component {
                                 </div>
                             </form>
                         </div>
-                        <button style={{ backgroundColor: "#f76874" }} onClick={this.props.close}>
+                        <button style={{ backgroundColor: "#f76874" }} onClick={this.close}>
                             Cancel
             </button>
-                        <button style={{ backgroundColor: "#6afc8a" }} onClick={() => this.props.save({title: this.state.ABCvalue['T'], abcNotation: this.createABCString(), type: 'Manual'})}>
+                        <button style={{ backgroundColor: "#6afc8a" }} onClick={this.save}>
                             Save
             </button>
 
