@@ -545,12 +545,13 @@ class Manual extends Component {
                                 </div>
                             </form>
                         </div>
-                        <button style={{ backgroundColor: "#6afc8a" }} onClick={() => this.props.save(this.createABCString())}>
-                            Save
-            </button>
                         <button style={{ backgroundColor: "#f76874" }} onClick={this.props.close}>
                             Cancel
             </button>
+                        <button style={{ backgroundColor: "#6afc8a" }} onClick={() => this.props.save({title: this.state.ABCvalue['T'], abcNotation: this.createABCString(), type: 'Manual'})}>
+                            Save
+            </button>
+
                     </div>
                 </div>
             </div>

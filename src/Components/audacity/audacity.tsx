@@ -26,9 +26,12 @@ interface AudacityProps {
   manualTrack: () => void;
   tracks: string[];
   removeTrack: (index: number) => void;
+  playTrack: (index: number) => void;
+  stopTrack: () => void;
+  openTrack: (index: number) => void;
 }
 
-export function Audacity({ importTrack, generateTrack, manualTrack, tracks, removeTrack }: AudacityProps) {
+export function Audacity({ importTrack, generateTrack, manualTrack, tracks, removeTrack, playTrack, stopTrack, openTrack }: AudacityProps) {
   return (
     <Container>
       <TopBarContainer>
@@ -60,13 +63,27 @@ export function Audacity({ importTrack, generateTrack, manualTrack, tracks, remo
             {tracks.length === 0
               ? `No tracks`
               : tracks.map((track, index) => (
-                  <Track key={index}>
-                    {track}
+                <Track key={index}>
+                  {track[0]}
+
+                  <div>
+                    {track[2] != 'Import' ?
+                      <button style={{ backgroundColor: "rgb(239, 239, 239)" }} onClick={() => openTrack(index)}>
+                        Open
+                    </button>
+                      : ''}
+                    <button style={{ backgroundColor: "rgb(239, 239, 239)" }} onClick={() => playTrack(index)}>
+                      Play
+                    </button>
+                    <button style={{ backgroundColor: "rgb(239, 239, 239)" }} onClick={() => stopTrack()}>
+                      Stop
+                    </button>
                     <button style={{ backgroundColor: "rgb(239, 239, 239)" }} onClick={() => removeTrack(index)}>
                       X
                     </button>
-                  </Track>
-                ))}
+                  </div>
+                </Track>
+              ))}
           </InnerBranchesContainer>
           <ButtonsContainer>
             <Button onClick={importTrack}>Import Track</Button>

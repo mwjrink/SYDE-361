@@ -84,7 +84,7 @@ class Import extends Component<any, any> {
                         <button style={{ backgroundColor: '#f76874' }} onClick={this.props.close}>
                             Cancel
                 </button>
-                        <button style={{ backgroundColor: '#6afc8a'}} onClick={() => this.props.save(this.state.audio)}>
+                        <button style={{ backgroundColor: '#6afc8a'}} onClick={() => this.props.save({title: this.state.file.name, audio: this.state.audio, type: 'Import'})}>
                             Save
                         </button>
                     </div>

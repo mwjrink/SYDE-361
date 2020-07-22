@@ -160,7 +160,7 @@ export class Abcts extends Component<
                     <Button onClick={() => this.regenerate()}>Generate</Button>
                     <div>
                         <Button style={{ backgroundColor: '#f76874' }} onClick={() => this.props.close()}>Cancel</Button>
-                        <Button style={{ backgroundColor: '#6afc8a' }} onClick={() => this.props.setMusic('Generated')}>Save</Button>
+                        <Button style={{ backgroundColor: '#6afc8a' }} onClick={() => this.props.setMusic({title: 'Generated', abcNotation: this.state.abcNotation, type: 'Generate'})}>Save</Button>
                     </div>
                 </ButtonContainer>
             </Container>
