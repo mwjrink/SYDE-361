@@ -24,14 +24,22 @@ interface AudacityProps {
   importTrack: () => void;
   generateTrack: () => void;
   manualTrack: () => void;
-  tracks: string[];
+  tracks: {
+    title: string,
+    file: any,
+    type: string,
+    index: number,
+    audio: any
+  }[];
   removeTrack: (index: number) => void;
   playTrack: (index: number) => void;
-  stopTrack: () => void;
+  stopTrack: (index: number) => void;
   openTrack: (index: number) => void;
+  playMaster: () => void;
+  stopMaster: () => void;
 }
 
-export function Audacity({ importTrack, generateTrack, manualTrack, tracks, removeTrack, playTrack, stopTrack, openTrack }: AudacityProps) {
+export function Audacity({ importTrack, generateTrack, manualTrack, tracks, removeTrack, playTrack, stopTrack, openTrack, playMaster, stopMaster }: AudacityProps) {
   return (
     <Container>
       <TopBarContainer>
@@ -47,9 +55,12 @@ export function Audacity({ importTrack, generateTrack, manualTrack, tracks, remo
         Master:
         <MasterCleff abcNotation="K:C\n|: cccc|cccc|cccc|cccc :|" parserParams={{}} engraverParams={{ responsive: "resize" }} renderParams={{ viewportHorizontal: true }} />
         <MasterButtonsContainer>
-          <PlaybackButton>▶</PlaybackButton>
-          <PlaybackButton>⏸</PlaybackButton>
-          <PlaybackButton>⏹</PlaybackButton>
+          <button style={{ backgroundColor: "rgb(239, 239, 239)" }} onClick={playMaster}>
+            Play
+      </button>
+          <button style={{ backgroundColor: "rgb(239, 239, 239)" }} onClick={stopMaster}>
+            Stop
+      </button>
         </MasterButtonsContainer>
       </MasterContainer>
       <MainContentContainer>
@@ -64,10 +75,10 @@ export function Audacity({ importTrack, generateTrack, manualTrack, tracks, remo
               ? `No tracks`
               : tracks.map((track, index) => (
                 <Track key={index}>
-                  {track[0]}
+                  {track.title}
 
                   <div>
-                    {track[2] != 'Import' ?
+                    {track.type != 'Import' ?
                       <button style={{ backgroundColor: "rgb(239, 239, 239)" }} onClick={() => openTrack(index)}>
                         Edit
                     </button>
@@ -75,7 +86,7 @@ export function Audacity({ importTrack, generateTrack, manualTrack, tracks, remo
                     <button style={{ backgroundColor: "rgb(239, 239, 239)" }} onClick={() => playTrack(index)}>
                       Play
                     </button>
-                    <button style={{ backgroundColor: "rgb(239, 239, 239)" }} onClick={() => stopTrack()}>
+                    <button style={{ backgroundColor: "rgb(239, 239, 239)" }} onClick={() => stopTrack(index)}>
                       Stop
                     </button>
                     <button style={{ backgroundColor: "rgb(239, 239, 239)" }} onClick={() => removeTrack(index)}>

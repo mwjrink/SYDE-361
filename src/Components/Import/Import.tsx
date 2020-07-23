@@ -61,7 +61,7 @@ class Import extends Component<any, any> {
     save() {
         this.state.audio.pause()
         this.state.audio.currentTime = 0;
-        this.props.save({title: this.state.file.name, audio: this.state.audio, type: 'Import', index: -1})
+        this.props.save({title: this.state.file.name, file: this.state.audio, type: 'Import', index: -1})
     }
 
     close() {

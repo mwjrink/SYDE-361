@@ -70,8 +70,9 @@ export const MasterContainer = styled.div`
   box-shadow: ${BoxShadow(4)};
   margin: 4px;
   padding: 16px;
-  max-width: 70%;
+  padding-left: 25px;
   align-self: center;
+  align-items: center;
 `;
 
 export const AudioContainer = styled.div`
@@ -155,6 +156,7 @@ export const Button = styled.button`
   outline: none;
   border-radius: 4px;
   border: none;
+  cursor: pointer;
   box-shadow: ${BoxShadow(4)};
 `;
 

@@ -90,7 +90,7 @@ export class Abcts extends Component<
 
     save() {
         this.midi.stop();
-        this.props.setMusic({title: 'Generated', abcNotation: this.state.abcNotation, type: 'Generate', index: this.props.existingIndex});
+        this.props.setMusic({title: 'Generated', file: this.state.abcNotation, type: 'Generate', index: this.props.existingIndex});
     }
 
     play() {

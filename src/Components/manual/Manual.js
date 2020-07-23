@@ -258,7 +258,7 @@ class Manual extends Component {
 
     save() {
         this.state.midi.stop();
-        this.props.save({ title: this.state.ABCvalue['T'], abcNotation: this.state.ABCvalue, type: 'Manual', index: this.props.existingIndex });
+        this.props.save({ title: this.state.ABCvalue['T'], file: this.state.ABCvalue, type: 'Manual', index: this.props.existingIndex });
     }
 
     close() {
