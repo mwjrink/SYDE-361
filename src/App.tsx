@@ -87,6 +87,9 @@ function App() {
             visualObj: visualObj[0],
             audioContext: audioContext,
             millisecondsPerMeasure: visualObj[0].millisecondsPerMeasure(),
+            onEnded: () => {
+              midiBuffer.isRunning = false;
+            }
           })
           .then(function (response: any) {
             return midiBuffer.prime();
