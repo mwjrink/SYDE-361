@@ -175,7 +175,7 @@ function App() {
         track.audio.pause();
         track.audio.currentTime = 0;
       }
-      else if (!track.audio.isRunning) {
+      else {
         track.audio.stop();
       }
     });
