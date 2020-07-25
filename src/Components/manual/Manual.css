@@ -26,12 +26,13 @@ label {
 }
 
 button {
-  border-radius: 10px;
-  border: none;
+  border-radius: 30px;
+  border: 1px solid black;
   background: #64b5f6;
   outline: none;
   margin: 4px;
   cursor: pointer;
+  padding: 0px 15px;
 }
 
 img {

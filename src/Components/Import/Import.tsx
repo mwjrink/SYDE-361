@@ -61,12 +61,14 @@ class Import extends Component<any, any> {
     save() {
         this.state.audio.pause()
         this.state.audio.currentTime = 0;
-        this.props.save({title: this.state.file.name, file: this.state.audio, type: 'Import', index: -1})
+        this.props.save({ title: this.state.file.name, file: this.state.audio, type: 'Import', index: -1 })
     }
 
     close() {
-        this.state.audio.pause()
-        this.state.audio.currentTime = 0;
+        if (this.state.audio != null) {
+            this.state.audio.pause()
+            this.state.audio.currentTime = 0;
+        }
         this.props.close()
     }
 
@@ -75,7 +77,7 @@ class Import extends Component<any, any> {
             <div className="popup">
                 <h2 style={{ color: 'black', textAlign: 'left', marginLeft: '0.5em' }}>Import:</h2>
                 <div className="drop-inner" ref={this.dropRef}>
-                    <h4 style={{ color: 'darkcyan' }}>Drop audio file here!</h4>
+                    <h4 style={{ color: '#64b5f6', fontSize: 'large' }}>Drop audio file here!</h4>
                 </div>
 
                 <div style={{ display: 'flex', flexDirection: 'column', flex: '1', textAlign: 'left' }}>
@@ -86,19 +88,21 @@ class Import extends Component<any, any> {
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'space-between', margin: '10px' }}>
                     <div>
-                        <button onClick={this.startAudio}>
+                        <button style={{backgroundColor: "#ef64f6"}} onClick={this.startAudio}>
                             Play
                         </button>
-                        <button onClick={this.stopAudio}>Stop</button>
+                        <button style={{backgroundColor: "#ef64f6"}} onClick={this.stopAudio}>
+                            Stop
+                        </button>
                         <div className="audio-error" style={{ display: 'none' }}>
                             Audio is not supported in this browser.
                         </div>
                     </div>
                     <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-end' }}>
-                        <button style={{ backgroundColor: '#f76874' }} onClick={this.close}>
+                        <button style={{ backgroundColor: '#fa6464' }} onClick={this.close}>
                             Cancel
                 </button>
-                        <button style={{ backgroundColor: '#6afc8a'}} onClick={this.save}>
+                        <button style={{ backgroundColor: '#6afc8a' }} onClick={this.save}>
                             Save
                         </button>
                     </div>

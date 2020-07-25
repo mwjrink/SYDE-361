@@ -176,12 +176,12 @@ export class Abcts extends Component<
                 </MainContainer>
                 <ButtonContainer style={{justifyContent: 'space-between', width: '100%' }}>
                     <div>
-                        <Button onClick={() => this.play()}>Play</Button>
-                        <Button onClick={() => this.stop()}>Stop</Button>
+                        <Button style={{backgroundColor: "#ef64f6"}} onClick={() => this.play()}>Play</Button>
+                        <Button style={{backgroundColor: "#ef64f6"}} onClick={() => this.stop()}>Stop</Button>
                     </div>
                     <Button onClick={() => this.regenerate()}>Generate</Button>
                     <div>
-                        <Button style={{ backgroundColor: '#f76874' }} onClick={this.close}>Cancel</Button>
+                        <Button style={{ backgroundColor: '#fa6464' }} onClick={this.close}>Cancel</Button>
                         <Button style={{ backgroundColor: '#6afc8a' }} onClick={this.save}>Save</Button>
                     </div>
                 </ButtonContainer>

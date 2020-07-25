@@ -6,7 +6,7 @@ const accent_color = "#64b5f6";
 
 export const Container = styled.div`
   width: 100%;
-  height: 97.5%;
+  height: 100%;
   position: absolute;
   top: 0;
   bottom: 0;
@@ -15,12 +15,13 @@ export const Container = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  font-family: Georgia, serif;
 `;
 
 export const TopBarContainer = styled.div`
-  /* position: absolute; */
   top: 0;
   width: 100%;
+  height: 72px;
   display: flex;
   justify-content: space-between;
 `;
@@ -28,7 +29,7 @@ export const TopBarContainer = styled.div`
 export const TitleContainer = styled.div`
   border: 1px solid black;
   padding: 12px 24px 12px 24px;
-  font-size: 3rem;
+  font-size: 2rem;
   border-radius: 4px;
   border: none;
   box-shadow: ${BoxShadow(4)};
@@ -37,17 +38,14 @@ export const TitleContainer = styled.div`
 
 export const CollaboratorsContainer = styled.div`
   display: flex;
-  justify-content: space-between;
   align-items: center;
   border: 1px solid black;
   padding: 12px 24px 12px 24px;
-  width: 30%;
   font-size: 2rem;
   border-radius: 4px;
   border: none;
   box-shadow: ${BoxShadow(4)};
   margin: 4px;
-  max-width: 450px
 `;
 
 export const ProfilePicture = styled.div`
@@ -59,17 +57,19 @@ export const ProfilePicture = styled.div`
   font-size: 2rem;
   background: ${accent_color};
   box-shadow: ${BoxShadow(4)};
+  margin-left: 10px;
 `;
 
 export const MasterContainer = styled.div`
   display: flex;
+  height: 72px;
   justify-content: center;
   font-size: 2rem;
   border-radius: 4px;
   border: none;
   box-shadow: ${BoxShadow(4)};
   margin: 4px;
-  padding: 16px;
+  padding: 0px 24px;
   padding-left: 25px;
   align-self: center;
   align-items: center;
@@ -93,7 +93,7 @@ export const PlaybackButton = styled.div`
 `;
 
 export const MainContentContainer = styled.div`
-  height: 80%;
+  height: 100%;  
   display: flex;
   justify-content: space-between;
   margin-right: 12px;
@@ -101,24 +101,21 @@ export const MainContentContainer = styled.div`
 
 export const InnerBranchesContainer = styled.div`
   border: none;
-  height: 90%;
-  
+  flex: 1;
   font-size: 1.5rem;
   color: grey;
 `;
 
 export const ButtonsContainer = styled.div`
   border: none;
-  height: 5%;
   margin-top: 12px;
   display: flex;
   justify-content: flex-end;
-  align-items: center;
+  align-items: flex-end;
 `;
 
 export const BranchContainer = styled.div`
   width: 100%;
-  height: 95%;
 
   font-size: 2rem;
 
@@ -135,27 +132,25 @@ export const BranchContainer = styled.div`
 export const ChatContainer = styled.div`
   width: 27%;
   border: 1px solid black;
-  height: 100%;
   font-size: 2rem;
-  padding: 8px;
+  padding: 16px;
   display: flex;
   justify-content: space-between;
   flex-direction: column;
   border-radius: 4px;
   border: none;
   box-shadow: ${BoxShadow(4)};
-  margin: 4px;
-  background: grey;
+  margin: 8px 8px 8px 16px;
 `;
 
 export const Button = styled.button`
-  padding: 8px;
+  padding: 0px 15px;
   font-size: 1rem;
   margin: 4px;
+  border-radius: 30px;
   background: ${accent_color};
   outline: none;
-  border-radius: 4px;
-  border: none;
+  border: 2px solid black;
   cursor: pointer;
   box-shadow: ${BoxShadow(4)};
 `;
@@ -163,13 +158,14 @@ export const Button = styled.button`
 export const Track = styled.div`
   width: 96%;
   height: 80px;
-  border: 1px solid black;
   margin: 4px 0px;
   display: flex;
   align-items: center;
-  padding: 4px 16px;
-  font-size: 1.5rem;
+  padding: 4px 24px;
+  font-size: 1.65rem;
   justify-content: space-between;
+  border-radius: 4px;
+  box-shadow: ${BoxShadow(4)};
 `;
 
 export const Empty = styled.div`

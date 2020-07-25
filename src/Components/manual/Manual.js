@@ -285,7 +285,7 @@ class Manual extends Component {
                         Manual:
         </h2>
                     <button
-                        style={{ height: "20px", width: "60px", outline: "none", marginTop: '1em', marginRight: "10px" }}
+                        style={{ height: "20px", width: "60px", outline: "none", marginTop: '1em', marginRight: "10px", padding: "0px" }}
                         onClick={() =>
                             this.setState((current) => ({
                                 ...current,
@@ -434,7 +434,7 @@ class Manual extends Component {
                     >
                         <label style={{ marginLeft: "0" }}>ABC Notation:</label>
                         <button
-                            style={{ height: "20px", width: "60px", outline: "none", margin: "2px 10px" }}
+                            style={{ height: "20px", width: "60px", outline: "none", margin: "2px 10px", padding: "0px", backgroundColor: "white", border: "2px black solid" }}
                             onClick={() =>
                                 this.setState((current) => ({
                                     ...current,
@@ -457,8 +457,8 @@ class Manual extends Component {
                 >
                     <div>
                         <div id="audioStaff" hidden> </div>
-                        <button onClick={this.startAudio}>Play</button>
-                        <button onClick={this.stopAudio}>Stop</button>
+                        <button onClick={this.startAudio} style={{backgroundColor: "#ef64f6"}}>Play</button>
+                        <button onClick={this.stopAudio} style={{backgroundColor: "#ef64f6"}}>Stop</button>
                         <div className="audio-error" style={{ display: "none" }}>
                             Audio is not supported in this browser.
             </div>
@@ -550,7 +550,7 @@ class Manual extends Component {
                                 </div>
                             </form>
                         </div>
-                        <button style={{ backgroundColor: "#f76874" }} onClick={this.close}>
+                        <button style={{ backgroundColor: "#fa6464" }} onClick={this.close}>
                             Cancel
             </button>
                         <button style={{ backgroundColor: "#6afc8a" }} onClick={this.save}>
