@@ -55,9 +55,9 @@ export function Audacity({ importTrack, generateTrack, manualTrack, tracks, remo
         <TitleContainer>Track 1</TitleContainer>
         <CollaboratorsContainer>
           Collaborators:
-          <ProfilePicture style={{ background: "#faac64", marginLeft: "25px" }}><img src={user} title="Taylor S" style={{ height: "45px", width: "45px", cursor: "default", padding: "2.5px" }}></img></ProfilePicture>
-          <ProfilePicture style={{ background: "#fafa64" }}><img src={user} title="Justin B" style={{ height: "45px", width: "45px", cursor: "default", padding: "2.5px" }}></img></ProfilePicture>
-          <ProfilePicture><img src={add} title="Add Collaborator" style={{ height: "45px", width: "45px", cursor: "pointer", padding: "2.5px" }}></img></ProfilePicture>
+          <ProfilePicture style={{ background: "#ef64f6", marginLeft: "25px", borderRadius: "50vh" }}><img src={user} title="Taylor S" style={{ height: "45px", width: "45px", cursor: "default", padding: "2.5px" }}></img></ProfilePicture>
+          <ProfilePicture style={{ background: "#62f5c9", borderRadius: "50vh" }}><img src={user} title="Justin B" style={{ height: "45px", width: "45px", cursor: "default", padding: "2.5px" }}></img></ProfilePicture>
+          <ProfilePicture style={{borderRadius: "50vh"}}><img src={add} title="Add Collaborator" style={{ height: "45px", width: "45px", cursor: "pointer", padding: "2px" }}></img></ProfilePicture>
         </CollaboratorsContainer>
       </TopBarContainer>
       <MasterContainer>
@@ -68,8 +68,8 @@ export function Audacity({ importTrack, generateTrack, manualTrack, tracks, remo
         {/* <MasterCleff abcNotation="K:C\n|: cccc|cccc|cccc|cccc :|" parserParams={{}} engraverParams={{ responsive: "resize" }} renderParams={{ viewportHorizontal: true }} /> */}
         {tracks.length != 0 ?
           <MasterButtonsContainer>
-            <ProfilePicture style={{ background: "#ef64f6" }}><img src={play} title="Play Track" style={{ height: "45px", width: "45px", cursor: "pointer", padding: "2.5px 2.5px 2.5px 5px" }} onClick={playMaster}></img></ProfilePicture>
-            <ProfilePicture style={{ background: "#ef64f6" }}><img src={stop} title="Stop Track" style={{ height: "45px", width: "45px", cursor: "pointer", padding: "2.25px" }} onClick={stopMaster}></img></ProfilePicture>
+            <ProfilePicture style={{ background: "#6afc8a" }}><img src={play} title="Play Track" style={{ height: "45px", width: "45px", cursor: "pointer", padding: "2.5px 2.5px 2.5px 5px" }} onClick={playMaster}></img></ProfilePicture>
+            <ProfilePicture style={{ background: "#faac64" }}><img src={stop} title="Stop Track" style={{ height: "45px", width: "45px", cursor: "pointer", padding: "2.25px" }} onClick={stopMaster}></img></ProfilePicture>
           </MasterButtonsContainer> :
           <MasterButtonsContainer>
             <ProfilePicture style={{ background: "gray" }}><img src={play} title="Play Track" style={{ height: "45px", width: "45px", cursor: "default", padding: "2.5px 2.5px 2.5px 5px" }} onClick={playMaster}></img></ProfilePicture>
@@ -97,10 +97,10 @@ export function Audacity({ importTrack, generateTrack, manualTrack, tracks, remo
 
                   <div style={{display: "flex", alignItems: "center"}}>
                     {track.type != 'Import' ?
-                    <ProfilePicture style={{ background: "#fa64ad" }}><img src={edit} title="Edit Track" style={{ height: "28px", width: "28px", cursor: "pointer", padding: "10px" }} onClick={() => openTrack(index)}></img></ProfilePicture>
+                    <ProfilePicture style={{ background: "#fafa64" }}><img src={edit} title="Edit Track" style={{ height: "28px", width: "28px", cursor: "pointer", padding: "10px" }} onClick={() => openTrack(index)}></img></ProfilePicture>
                       : ''}
-                    <ProfilePicture style={{ background: "#ef64f6" }}><img src={play} title="Play Track" style={{ height: "45px", width: "45px", cursor: "pointer", padding: "2.5px 2.5px 2.5px 5px" }} onClick={() => playTrack(index)}></img></ProfilePicture>
-                    <ProfilePicture style={{ background: "#ef64f6" }}><img src={stop} title="Stop Track" style={{ height: "45px", width: "45px", cursor: "pointer", padding: "2.25px" }} onClick={() => stopTrack(index)}></img></ProfilePicture>
+                    <ProfilePicture style={{ background: "#6afc8a" }}><img src={play} title="Play Track" style={{ height: "45px", width: "45px", cursor: "pointer", padding: "2.5px 2.5px 2.5px 5px" }} onClick={() => playTrack(index)}></img></ProfilePicture>
+                    <ProfilePicture style={{ background: "#faac64" }}><img src={stop} title="Stop Track" style={{ height: "45px", width: "45px", cursor: "pointer", padding: "2.25px" }} onClick={() => stopTrack(index)}></img></ProfilePicture>
                     <ProfilePicture style={{ background: "#fa6464" }}><img src={x} title="Remove Track" style={{ height: "36px", width: "36px", cursor: "pointer", padding: "5.5px" }} onClick={() => removeTrack(index)}></img></ProfilePicture>
                   </div>
                 </Track>

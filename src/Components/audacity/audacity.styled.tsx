@@ -52,7 +52,7 @@ export const ProfilePicture = styled.div`
   border: none;
   width: 48px;
   height: 48px;
-  border-radius: 50vh;
+  border-radius: 4px;
   text-align: center;
   font-size: 2rem;
   background: ${accent_color};
@@ -147,7 +147,7 @@ export const Button = styled.button`
   padding: 0px 15px;
   font-size: 1rem;
   margin: 4px;
-  border-radius: 30px;
+  border-radius: 15px;
   background: ${accent_color};
   outline: none;
   border: 2px solid black;

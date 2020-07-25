@@ -59,7 +59,7 @@ export const ButtonContainer = styled.div`
 export const Button = styled.button`
   padding: 0px 15px;
   margin: 4px;
-  border-radius: 30px;
+  border-radius: 15px;
   background: ${accent_color};
   outline: none;
   border: 1px solid black;
