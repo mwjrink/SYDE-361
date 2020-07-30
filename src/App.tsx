@@ -164,7 +164,7 @@ function App() {
     stopMaster();
     tracks.map((track: any) => {
       if (track.type === 'Import') {
-        tracks.audio.play()
+        track.audio.play()
       }
       else if (!track.audio.isRunning) {
         track.audio.start();
