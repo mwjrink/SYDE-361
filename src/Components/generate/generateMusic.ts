@@ -37,7 +37,7 @@ function rotate_array<T>(arr: T[], count: number) {
   var len = arr.length >>> 0,
     count = count >> 0;
 
-  arr.unshift(arr.splice(count % len, len) as any);
+  arr.splice(count % len, len);
   return arr;
 }
 
@@ -48,10 +48,9 @@ export default function GenerateMusic({ bars, timeSignature, key, generations, n
   let bestFit: number[][] = [];
   let bestFit_length: number[] = [];
 
-  const to_rotate = key.endsWith("m") ? minor_scale.map((i) => notes[i - 1]) : major_scale.map((i) => notes[i - 1]);
   const amount = notes.findIndex((value) => value.startsWith(key.substr(0, 1).toLowerCase()));
-
-  let notes_in_key = rotate_array(to_rotate, amount);
+  const notes_recentered = notes.slice(amount).concat(notes.slice(0, amount));
+  const notes_in_key = key.endsWith("m") ? minor_scale.map((i) => notes_recentered[i - 1]) : major_scale.map((i) => notes_recentered[i - 1]);
 
   // change this to generate from the seed
   for (let i = 0; i < bars * notes_per_bar; i++) {
@@ -61,15 +60,13 @@ export default function GenerateMusic({ bars, timeSignature, key, generations, n
   for (let i = 0; i < bars; i++) {
     let total = notes_per_bar;
     while (total > 0) {
-      const rand = getRandomInt(notes_per_bar);
+      const rand = getRandomInt(note_density);
       if (rand <= total) {
         bestFit_length.push(rand);
         total -= rand;
       }
     }
   }
-
-  console.log(bestFit_length);
 
   for (let j = 0; j < generations; j++) {
     let mutated: number[][][] = [];
@@ -107,10 +104,29 @@ export default function GenerateMusic({ bars, timeSignature, key, generations, n
       }
     }
 
-    // for (let k = 0; k < mutated.length; k++) {
-    //   note_lengths.push(shuffle(bestFit_length.slice(0)));
-    // }
-    note_lengths.push(bestFit_length.slice(0));
+    for (let k = 0; k < bestFit.length; k++) {
+      note_lengths[k] = [];
+      for (let i = 0; i < bars; i++) {
+        let total = notes_per_bar;
+        while (total > 0) {
+          if ((note_lengths[k].length === bestFit.length)) {
+            note_lengths[k].push(total);
+            break;
+          }
+
+          const rand = getRandomInt(note_density);
+          if (rand <= total) {
+            note_lengths[k].push(rand);
+            total -= rand;
+          }
+        }
+      }
+      while (note_lengths[k].length < bestFit.length) {
+        const rand = getRandomInt(note_lengths[k].length);
+        note_lengths[k].splice(rand, 0, 0);
+      }
+    }
+
     // for (let k = 0; k < bestFit.length - 1; k++) {
     //     let current_index = mutated.length;
     //     mutated.push(bestFit.slice(0));
@@ -123,21 +139,27 @@ export default function GenerateMusic({ bars, timeSignature, key, generations, n
     //bestFit = evaluate(mutated, key);
   }
 
-  console.log(bestFit);
-
   let result: string[] = [];
 
   for (let i = 0; i < bestFit.length; i += notes_per_bar) {
-    result = result.concat(
-      bestFit
-        .slice(i, i + notes_per_bar)
-        .filter((value, index) => bestFit_length[index] != 0)
-        .map((nts, index) => "[" + nts.map((j) => notes_in_key[j] + bestFit_length[index]).join("") + "]")
-    );
-    result.push("|");
+    if (note_density === -1) {
+      result = result.concat(bestFit.slice(i, i + notes_per_bar).map((nts, index) => "[" + nts.map((j) => notes_in_key[j] + bestFit_length[i + index]).join("") + "]"));
+    } else {
+      result = result.concat(
+        bestFit
+          .slice(i, i + notes_per_bar)
+          .filter((value, index) => bestFit_length[index + i] != 0)
+          .map((nts, index) => "[" + nts.map((j) => notes_in_key[j] + bestFit_length[i + index]).join("") + "]")
+      );
+    }
+    if (i != bestFit.length - notes_per_bar) {
+      result.push("|");
+    } else {
+      result.push(":|");
+    }
   }
 
-  console.log(result);
+  // console.log(bestFit_length);
 
   return result;
 }
@@ -216,15 +238,25 @@ function evaluate(mutations: number[][][], notes_per_bar: number, upbeatedness: 
     evaluations.push({ value: score, index: i });
   }
 
-  const sorted_best = evaluations.sort((a, b) => b.value - a.value);
-  return mutations[sorted_best[0].index]
-    .slice(0, mutations[sorted_best[0].index].length / 2 - 1) //
-    .concat(mutations[sorted_best[1].index].slice(mutations[sorted_best[1].index].length / 2 - 1, mutations[sorted_best[1].index].length));
+  const sorted = evaluations.sort((a, b) => b.value - a.value);
+  return mutations[sorted[0].index]
+    .slice(0, mutations[sorted[0].index].length / 2 - 1) //
+    .concat(mutations[sorted[1].index].slice(mutations[sorted[1].index].length / 2 - 1, mutations[sorted[1].index].length));
 }
 
 function evaluate_note_lengths(note_lengths: number[][], notes_per_bar: number, note_density: number) {
-  // TODO
-  return note_lengths[0];
+  const evaluations: { value: number; index: number }[] = [];
+
+  for (let i = 0; i < note_lengths.length; i++) {
+    const value = Math.abs(note_lengths[i].filter((i) => i > 0).length - note_density * notes_per_bar);
+    evaluations.push({ value, index: i });
+  }
+
+  const sorted = evaluations.sort((a, b) => a.value - b.value);
+
+  return note_lengths[sorted[0].index]
+    .slice(0, note_lengths[sorted[0].index].length / 2 - 1) //
+    .concat(note_lengths[sorted[1].index].slice(note_lengths[sorted[1].index].length / 2 - 1, note_lengths[sorted[1].index].length));
 }
 
 function shuffle(a: any[]) {
