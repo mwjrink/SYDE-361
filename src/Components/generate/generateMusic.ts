@@ -46,6 +46,7 @@ export default function GenerateMusic({ bars, timeSignature, key, generations, n
 
   // generate the initial value
   let bestFit: number[][] = [];
+  let bestFit_length: number[] = [];
 
   const to_rotate = key.endsWith("m") ? minor_scale.map((i) => notes[i - 1]) : major_scale.map((i) => notes[i - 1]);
   const amount = notes.findIndex((value) => value.startsWith(key.substr(0, 1).toLowerCase()));
@@ -56,6 +57,19 @@ export default function GenerateMusic({ bars, timeSignature, key, generations, n
   for (let i = 0; i < bars * notes_per_bar; i++) {
     bestFit.push([getRandomInt(notes_in_key.length)]);
   }
+
+  for (let i = 0; i < bars; i++) {
+    let total = notes_per_bar;
+    while (total > 0) {
+      const rand = getRandomInt(notes_per_bar);
+      if (rand <= total) {
+        bestFit_length.push(rand);
+        total -= rand;
+      }
+    }
+  }
+
+  console.log(bestFit_length);
 
   for (let j = 0; j < generations; j++) {
     let mutated: number[][][] = [];
@@ -93,13 +107,17 @@ export default function GenerateMusic({ bars, timeSignature, key, generations, n
       }
     }
 
+    // for (let k = 0; k < mutated.length; k++) {
+    //   note_lengths.push(shuffle(bestFit_length.slice(0)));
+    // }
+    note_lengths.push(bestFit_length.slice(0));
     // for (let k = 0; k < bestFit.length - 1; k++) {
     //     let current_index = mutated.length;
     //     mutated.push(bestFit.slice(0));
     //     note_lengths[current_index][k] = note_lengths[current_index][k];
     // }
-
-    bestFit = evaluate(mutated, notes_per_bar, note_density, upbeatedness);
+    bestFit = evaluate(mutated, notes_per_bar, upbeatedness);
+    bestFit_length = evaluate_note_lengths(note_lengths, notes_per_bar, note_density);
 
     // evaluate best option
     //bestFit = evaluate(mutated, key);
@@ -107,21 +125,17 @@ export default function GenerateMusic({ bars, timeSignature, key, generations, n
 
   console.log(bestFit);
 
-  const result = bestFit.map((nts) => {
-    if (nts.length === 1) {
-      return "[" + notes_in_key[nts[0]] + "]";
-    } else {
-      return (
-        "[" +
-        notes_in_key[nts[0]] +
-        nts
-          .slice(1)
-          .map((i) => notes_in_key[i] + "," + notes_per_bar)
-          .join(" ") +
-        "]"
-      );
-    }
-  });
+  let result: string[] = [];
+
+  for (let i = 0; i < bestFit.length; i += notes_per_bar) {
+    result = result.concat(
+      bestFit
+        .slice(i, i + notes_per_bar)
+        .filter((value, index) => bestFit_length[index] != 0)
+        .map((nts, index) => "[" + nts.map((j) => notes_in_key[j] + bestFit_length[index]).join("") + "]")
+    );
+    result.push("|");
+  }
 
   console.log(result);
 
@@ -145,7 +159,7 @@ export default function GenerateMusic({ bars, timeSignature, key, generations, n
 // negative score for repeated single notes
 // any less than 2 repeated sequences is bad any more than 5 is bad
 // pattern in note timings that isnt just the same, also near eachother
-function evaluate(mutations: number[][][], notes_per_bar: number, note_density: number, upbeatedness: number) {
+function evaluate(mutations: number[][][], notes_per_bar: number, upbeatedness: number) {
   const evaluations: { value: number; index: number }[] = [];
   for (let i = 0; i < mutations.length; i++) {
     let score = 0;
@@ -202,5 +216,24 @@ function evaluate(mutations: number[][][], notes_per_bar: number, note_density: 
     evaluations.push({ value: score, index: i });
   }
 
-  return mutations[evaluations.sort((a, b) => b.value - a.value)[0].index];
+  const sorted_best = evaluations.sort((a, b) => b.value - a.value);
+  return mutations[sorted_best[0].index]
+    .slice(0, mutations[sorted_best[0].index].length / 2 - 1) //
+    .concat(mutations[sorted_best[1].index].slice(mutations[sorted_best[1].index].length / 2 - 1, mutations[sorted_best[1].index].length));
+}
+
+function evaluate_note_lengths(note_lengths: number[][], notes_per_bar: number, note_density: number) {
+  // TODO
+  return note_lengths[0];
+}
+
+function shuffle(a: any[]) {
+  var j, x, i;
+  for (i = a.length - 1; i > 0; i--) {
+    j = Math.floor(Math.random() * (i + 1));
+    x = a[i];
+    a[i] = a[j];
+    a[j] = x;
+  }
+  return a;
 }
