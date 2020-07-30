@@ -143,7 +143,7 @@ export class Abcts extends Component<
                 bars: 4,
                 timeSignature: [4, 4],
                 key: 'this.key',
-                generations: 100,
+                generations: 100
             }).join(''),
         }))
     }
